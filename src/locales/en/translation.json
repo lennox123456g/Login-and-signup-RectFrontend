@@ -1,0 +1,8 @@
+{
+  "welcome": "Welcome to React",
+  "description": "This is a multilingual app",
+  "buttons": {
+    "submit": "Submit",
+    "cancel": "Cancel"
+  }
+}
