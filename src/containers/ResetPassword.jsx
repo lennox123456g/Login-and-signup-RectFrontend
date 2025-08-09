@@ -37,13 +37,13 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className='max-w-md mx-auto mt-20 px-4'>
-      <h1 className='text-2xl font-bold text-gray-900 mb-6'>Request Password Reset:</h1>
-      
-      <form onSubmit={onSubmit} className='space-y-6'>
+    <div className='min-h-screen bg-gray-50 flex flex-col items-center justify px-4 '>
+      <h1 className='text-2xl font-bold text-gray-900 mb-6 mt-15'>Request Password Reset</h1>
+      <div class="w-full max-w-sm mt-10 rounded-lg bg-white shadow-md p-8">
+        <form onSubmit={onSubmit} className='space-y-6 '>
         <div>
           <input
-            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+            className='w-full px-3 text-black py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
             type='email'
             placeholder='Email'
             name='email'
@@ -65,6 +65,7 @@ const ResetPassword = () => {
           Reset Password
         </button>
       </form>
+      </div>
     </div>
   );
 };

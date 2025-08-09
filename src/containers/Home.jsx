@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
+import AxiosInstance from './AxiosInstance';
 
 const Home = () => {
     const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const Home = () => {
                 };
                 
                 // Make the API call to your backend (which will handle ActiveCampaign)
-                await axios.post('http://localhost:8000/api/email-signup/ebook-signup', body, config);
+                await AxiosInstance.post('/api/email-signup/ebook-signup', body, config);
                 
                 setSubmitted(true);
                 console.log('Form submitted:', { email, first_name, agree });
@@ -52,12 +52,12 @@ const Home = () => {
 
     if (submitted) {
         return (
-            <div className='mt-12 flex flex-col justify-center items-center px-4 bg-white'>
-                <div className='text-center max-w-md'>
-                    <div className='mb-4 p-6 bg-green-50 border border-green-200 rounded-lg'>
-                        <div className='text-green-600 text-4xl mb-2'>✓</div>
-                        <h2 className='text-2xl font-bold text-green-800 mb-2'>Success!</h2>
-                        <p className='text-green-700'>
+            <div class='flex  justify items-center px-4 bg-white w-full min-h-screen '>
+                <div class='text-center max-w-md'>
+                    <div class='mb-4 p-6 bg-green-50 border border-green-200 rounded-lg'>
+                        <div class='text-green-600 text-4xl mb-2'>✓</div>
+                        <h2 class='text-2xl font-bold text-green-800 mb-2'>Success!</h2>
+                        <p class='text-green-700'>
                             Thank you for signing up! Check your email for your free eBook.
                         </p>
                     </div>
@@ -67,7 +67,7 @@ const Home = () => {
                             setFormData({ first_name: '', email: '' });
                             setAgree(false);
                         }}
-                        className='text-blue-600 hover:text-blue-800 underline'
+                     class='text-blue-600 hover:text-blue-800 underline'
                     >
                         Submit another form
                     </button>
@@ -77,17 +77,17 @@ const Home = () => {
     }
 
     return (
-        <div className='mt-12 flex flex-col justify-center items-center px-4 bg-white'>
-            <h1 className='text-4xl md:text-5xl font-bold text-center mb-12 text-gray-800 max-w-4xl leading-tight'>
-                Sign up to our email list to receive your FREE eBook!
+        <div class='min-h-screen flex flex-col justify items-center px-4 bg-white mt-15  '>
+            <h1 class='text-3xl md:text-3xl font-bold text-center md:mt-5 md:mb-5 text-black max-w-2xl leading-none mt-15 mb-10 '>
+                Sign up to our email list to stay in the Loop!
             </h1>
-            <div className='w-full max-w-md'>
-                <div className='mb-6'>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+            <div class='w-full md:max-w-md max-w-sm border border-black rounded-lg p-6 '>
+                <div class='mb-6'>
+                    <label class='block text-sm font-medium text-gray-700 mb-2'>
                         First Name:
                     </label>
                     <input
-                        className='w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                     class='w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                         type='text'
                         name='first_name'
                         onChange={e => onChange(e)}
@@ -95,12 +95,12 @@ const Home = () => {
                         required
                     />
                 </div>
-                <div className='mb-6'>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                <div class='mb-6'>
+                    <label class='block text-sm font-medium text-gray-700 mb-2'>
                         Email:
                     </label>
                     <input
-                        className='w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                     class='w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                         type='email'
                         name='email'
                         onChange={e => onChange(e)}
@@ -108,9 +108,9 @@ const Home = () => {
                         required
                     />
                 </div>
-                <div className='mb-6 flex items-start'>
+                <div class='mb-6 flex '>
                     <input
-                        className='mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+                     class='mt-1 h-4 w-4 text-blue-600 bg-white focus:ring-blue-500 border-gray-300 rounded'
                         type='checkbox'
                         name='agree'
                         id='agree'
@@ -119,26 +119,26 @@ const Home = () => {
                         required
                     />
                     <label
-                        className='ml-2 text-sm text-gray-600'
-                        htmlFor='agree'
+                     class='ml-2 text-sm text-gray-600'
+                     htmlFor='agree'
                     >
                         I agree to the Privacy Policy and Terms of Service
                     </label>
                 </div>
                 {
                     loading ? (
-                        <div className='flex justify-center items-center'>
+                        <div class='flex justify-center items-center'>
                             <ArrowPathIcon 
-                                className='animate-spin text-blue-500 h-12 w-12'
+                             class='animate-spin text-blue-500 h-12 w-12'
                             />
                         </div>
                     ) : (
                         <button 
                             onClick={onSubmit}
                             disabled={!first_name || !email || !agree}
-                            className='w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50'
+                         class='w-full bg-green-400 hover:bg-green-700 disabled:bg-gray-200 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50'
                         >
-                            GIVE ME MY FREE EBOOK
+                            KEEP ME POSTED!
                         </button>
                     )
                 }

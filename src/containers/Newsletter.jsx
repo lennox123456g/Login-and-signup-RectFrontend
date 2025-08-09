@@ -3,12 +3,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Newsletter = () => (
-  <div className="container mx-auto px-4 bg-white">
+  <div className="container mx-auto px-4 bg-white w-full min-h-screen flex flex-col items-center">
     {/* Centered card with shadow and padding */}
-    <div className="mt-10 bg-white shadow-lg rounded-lg p-8 text-center">
+    <div className="md:mt-20 bg-white shadow-lg rounded-lg p-8 text-center w-full md:max-w-md  max-w-sm mt-30 border border-black/50 ">
       {/* Main heading */}
       <h1 className="text-4xl font-bold text-gray-800 mb-4">
-        Welcome to Auth System!
+        Welcome to the Auth System!
       </h1>
 
       {/* Description paragraph */}
@@ -20,15 +20,9 @@ const Newsletter = () => (
       <hr className="my-6 border-t border-gray-300" />
 
       {/* Instruction text */}
-      <p className="text-gray-700 mb-6">Click the Log In button</p>
+      <p className="text-red-600 mb-6">SPOILER ALERT!</p>
+      <p className="text-blue-600 text-3xl  mb-6">THE NEWSLETTER IS COMING</p>
 
-      {/* Link styled as a button to /login */}
-      <Link
-        to="/login"
-        className="inline-block bg-blue-600 text-white text-lg font-medium px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300"
-      >
-        Login
-      </Link>
     </div>
   </div>
 );

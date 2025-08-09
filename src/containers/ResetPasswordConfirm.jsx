@@ -53,45 +53,47 @@ const ResetPasswordConfirm = () => {
   }
 
   return (
-    <div className='max-w-md mx-auto mt-20 px-4'>
-      <form onSubmit={onSubmit} className='space-y-6'>
-        <div>
-          <input
-            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-            type='password'
-            placeholder='New Password'
-            name='new_password'
-            value={new_password}
-            onChange={onChange}
-            minLength='6'
-            required
-          />
-        </div>
-        <div>
-          <input
-            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-            type='password'
-            placeholder='Confirm New Password'
-            name='re_new_password'
-            value={re_new_password}
-            onChange={onChange}
-            minLength='6'
-            required
-          />
-        </div>
-        {/* Show error message if any */}
-        {error && (
-          <p className='text-red-600 text-sm mb-4'>
-            {error}
-          </p>
-        )}
-        <button
-          className='w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200'
-          type='submit'
-        >
-          Reset Password
-        </button>
-      </form>
+    <div className='mx-auto mt-20 px-4 w-full flex flex-col justify items-center '>
+      <div class="max-w-md">
+        <form onSubmit={onSubmit} className='space-y-6'>
+          <div>
+            <input
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              type='password'
+              placeholder='New Password'
+              name='new_password'
+              value={new_password}
+              onChange={onChange}
+              minLength='6'
+              required
+            />
+          </div>
+          <div>
+            <input
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              type='password'
+              placeholder='Confirm New Password'
+              name='re_new_password'
+              value={re_new_password}
+              onChange={onChange}
+              minLength='6'
+              required
+            />
+          </div>
+          {/* Show error message if any */}
+          {error && (
+            <p className='text-red-600 text-sm mb-4'>
+              {error}
+            </p>
+          )}
+          <button
+            className='w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200'
+            type='submit'
+          >
+            Reset Password
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

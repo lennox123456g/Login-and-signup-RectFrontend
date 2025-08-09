@@ -40,14 +40,14 @@ const Login = () => {
 
   // If user is authenticated, redirect to home page
   if (isAuthenticated) {
-    return <Navigate to='/' replace />;
+    return <Navigate to='/translate' replace />;
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12'>
-      <div className='max-w-md w-full space-y-8'>
+    <div className='min-h-screen bg-gray-50 flex items-center   justify-center px-4 py-7 w-full'>
+      <div className='max-w-md w-full space-y-5 md:mt-0 -mt-30'>
         <div className='text-center'>
-          <div className='mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6'>
+          <div className='mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-1'>
             <svg 
               className='w-8 h-8 text-blue-600' 
               fill='none' 
@@ -62,11 +62,11 @@ const Login = () => {
               />
             </svg>
           </div>
-          <h1 className='text-3xl font-bold text-gray-900 mb-2'>Sign In</h1>
-          <p className='text-gray-600 mb-8'>Sign into your account to continue</p>
+          <h1 className='text-3xl font-bold text-gray-900 mb-1'>Sign In</h1>
+          <p className='text-gray-600 mb-3'>Sign into your account to continue</p>
         </div>
 
-        <div className='bg-white rounded-lg shadow-md p-8'>
+        <div className='bg-white rounded-lg shadow-md p-8 max-w-md'>
           <form onSubmit={onSubmit} className='space-y-6'>
             <div>
               <label htmlFor='email' className='block text-sm font-medium text-gray-700 mb-2'>

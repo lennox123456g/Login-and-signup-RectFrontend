@@ -1,4 +1,4 @@
-import axios from 'axios';
+import AxiosInstance from '../containers/AxiosInstance'; // Import your configured axios instance
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -57,16 +57,9 @@ const removeFromLocalStorage = (key) => {
 const getAuthHeaders = () => {
     const token = getFromLocalStorage('access');
     return {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
+        'Authorization': `Bearer ${token}`
     };
 };
-
-const getBasicHeaders = () => ({
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-});
 
 const extractErrorMessage = (errorData, defaultMessage = 'An error occurred') => {
     if (!errorData) return defaultMessage;
@@ -104,11 +97,9 @@ export const checkAuthenticated = () => async dispatch => {
     }
 
     try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/jwt/verify/`,
-            { token: accessToken },
-            { headers: getBasicHeaders() }
-        );
+        const response = await AxiosInstance.post('/auth/jwt/verify/', {
+            token: accessToken
+        });
         
         if (response.status === 200) {
             dispatch({ type: AUTHENTICATED_SUCCESS });
@@ -140,10 +131,9 @@ export const loadUser = () => async dispatch => {
     }
 
     try {
-        const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/auth/users/me/`,
-            { headers: getAuthHeaders() }
-        );
+        const response = await AxiosInstance.get('/auth/users/me/', {
+            headers: getAuthHeaders()
+        });
 
         dispatch({
             type: USER_LOADED_SUCCESS,
@@ -153,10 +143,9 @@ export const loadUser = () => async dispatch => {
         if (error.response?.status === 401) {
             try {
                 await dispatch(refreshToken());
-                const retryResponse = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/auth/users/me/`,
-                    { headers: getAuthHeaders() }
-                );
+                const retryResponse = await AxiosInstance.get('/auth/users/me/', {
+                    headers: getAuthHeaders()
+                });
                 
                 dispatch({
                     type: USER_LOADED_SUCCESS,
@@ -191,11 +180,9 @@ export const refreshToken = () => async dispatch => {
     }
 
     try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/jwt/refresh/`,
-            { refresh },
-            { headers: getBasicHeaders() }
-        );
+        const response = await AxiosInstance.post('/auth/jwt/refresh/', {
+            refresh
+        });
         
         setToLocalStorage('access', response.data.access);
         
@@ -229,11 +216,10 @@ export const login = (email, password) => async dispatch => {
     dispatch({ type: LOGIN_REQUEST });
 
     try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/jwt/create/`,
-            { email, password },
-            { headers: getBasicHeaders() }
-        );
+        const response = await AxiosInstance.post('/auth/jwt/create/', {
+            email, 
+            password
+        });
 
         setToLocalStorage('access', response.data.access);
         if (response.data.refresh) {
@@ -265,17 +251,13 @@ export const signup = (firstName, lastName, email, password, confirmPassword) =>
     dispatch({ type: SIGNUP_REQUEST });
 
     try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/users/`,
-            {
-                first_name: firstName,
-                last_name: lastName,
-                email,
-                password,
-                re_password: confirmPassword
-            },
-            { headers: getBasicHeaders() }
-        );
+        const response = await AxiosInstance.post('/auth/users/', {
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            password,
+            re_password: confirmPassword
+        });
 
         dispatch({
             type: SIGNUP_SUCCESS,
@@ -313,11 +295,10 @@ export const verifyEmail = (uid, token) => async dispatch => {
     dispatch({ type: ACTIVATION_REQUEST });
 
     try {
-        await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/users/activation/`,
-            { uid, token },
-            { headers: getBasicHeaders() }
-        );
+        await AxiosInstance.post('/auth/users/activation/', {
+            uid, 
+            token
+        });
 
         dispatch({
             type: ACTIVATION_SUCCESS,
@@ -342,11 +323,9 @@ export const resetPassword = (email) => async dispatch => {
     dispatch({ type: PASSWORD_RESET_REQUEST });
 
     try {
-        await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/users/reset_password/`,
-            { email },
-            { headers: getBasicHeaders() }
-        );
+        await AxiosInstance.post('/auth/users/reset_password/', {
+            email
+        });
 
         dispatch({
             type: PASSWORD_RESET_SUCCESS,
@@ -371,16 +350,12 @@ export const confirmPasswordReset = (uid, token, newPassword, confirmNewPassword
     dispatch({ type: PASSWORD_RESET_CONFIRM_REQUEST });
 
     try {
-        await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/users/reset_password_confirm/`,
-            {
-                uid,
-                token,
-                new_password: newPassword,
-                re_new_password: confirmNewPassword
-            },
-            { headers: getBasicHeaders() }
-        );
+        await AxiosInstance.post('/auth/users/reset_password_confirm/', {
+            uid,
+            token,
+            new_password: newPassword,
+            re_new_password: confirmNewPassword
+        });
 
         dispatch({
             type: PASSWORD_RESET_CONFIRM_SUCCESS,
@@ -414,7 +389,7 @@ export const confirmPasswordReset = (uid, token, newPassword, confirmNewPassword
 };
 
 // =============================================================================
-// AXIOS INTERCEPTOR SETUP
+// AXIOS INTERCEPTOR SETUP FOR AXIOSINSTANCE
 // =============================================================================
 
 let isRefreshing = false;
@@ -432,7 +407,22 @@ const processQueue = (error, token = null) => {
     failedQueue = [];
 };
 
-axios.interceptors.response.use(
+// Add request interceptor to automatically include Bearer tokens
+AxiosInstance.interceptors.request.use(
+    (config) => {
+        const token = getFromLocalStorage('access');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Add response interceptor for automatic token refresh
+AxiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
@@ -443,7 +433,7 @@ axios.interceptors.response.use(
                     failedQueue.push({ resolve, reject });
                 }).then(token => {
                     originalRequest.headers['Authorization'] = `Bearer ${token}`;
-                    return axios(originalRequest);
+                    return AxiosInstance(originalRequest);
                 }).catch(err => {
                     return Promise.reject(err);
                 });
@@ -456,10 +446,9 @@ axios.interceptors.response.use(
 
             if (refreshTokenValue) {
                 try {
-                    const response = await axios.post(
-                        `${import.meta.env.VITE_API_URL}/auth/jwt/refresh/`,
-                        { refresh: refreshTokenValue }
-                    );
+                    const response = await AxiosInstance.post('/auth/jwt/refresh/', {
+                        refresh: refreshTokenValue
+                    });
 
                     const { access } = response.data;
                     setToLocalStorage('access', access);
@@ -467,7 +456,7 @@ axios.interceptors.response.use(
                     processQueue(null, access);
                     originalRequest.headers['Authorization'] = `Bearer ${access}`;
                     
-                    return axios(originalRequest);
+                    return AxiosInstance(originalRequest);
                 } catch (refreshError) {
                     processQueue(refreshError, null);
                     removeFromLocalStorage('access');
@@ -502,40 +491,3 @@ export const load_user = loadUser;
 export const verify = verifyEmail;
 export const reset_password = resetPassword;
 export const reset_password_confirm = confirmPasswordReset;
-
-/*Great question! The choice between "JWT" and "Bearer" in the Authorization header isn't arbitrary - it's about following web standards and what your API expects.
-Why Bearer, not JWT?
-1. RFC 6750 Standard
-
-Bearer is the official standard defined in RFC 6750 for OAuth 2.0 Bearer Token usage
-It's the widely accepted convention across web APIs
-Format: Authorization: Bearer <token>
-
-2. JWT is the Token Type, Bearer is the Auth Scheme
-
-JWT (JSON Web Token) = the format/structure of the token itself
-Bearer = the authentication scheme that tells the server how to handle the token
-Think of it like: "This is a Bearer token (and it happens to be in JWT format)"
-
-3. API Framework Expectations
-
-Most frameworks (Django REST Framework, Express.js, Spring Boot, etc.) expect Bearer by default
-Your Django API is configured to look for Authorization: Bearer <token>
-Using JWT instead of Bearer makes the API reject the request
-
-Real-world Example:
-javascript// ❌ WRONG - Custom scheme, not standard
-Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-// ✅ CORRECT - Standard Bearer scheme
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Why Some People Use "JWT"
-Some developers mistakenly use JWT because:
-
-They think it's more descriptive
-They've seen it in tutorials that weren't following standards
-They confuse token format with auth scheme
-
-Best Practice
-Always use Bearer unless your API specifically requires something else. It's the standard, widely supported, and what most authentication libraries expect.
-Your Django backend was rejecting JWT tokens because it's configured to only accept Bearer tokens - that's why you were getting 401 errors! */

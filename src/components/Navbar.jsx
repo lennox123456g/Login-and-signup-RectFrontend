@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, div } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/auth';
@@ -26,10 +26,10 @@ const Navbar = () => {
 
   // Links for unauthenticated users
   const guestLinks = (
-    <>
+    <div class="md:flex justify md:items-center">
       <li>
         <Link 
-          className='block px-4  text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-blue-600'
+          class='block px-4 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3 md:hover:bg-transparent md:hover:text-blue-600'
           to='/login'
           onClick={() => setIsMenuOpen(false)}
         >
@@ -38,7 +38,7 @@ const Navbar = () => {
       </li>
       <li>
         <Link 
-          className='block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-blue-600'
+          class='block px-4  text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3  md:hover:bg-transparent md:hover:text-blue-600'
           to='/signup'
           onClick={() => setIsMenuOpen(false)}
         >
@@ -46,16 +46,17 @@ const Navbar = () => {
         </Link>
         
       </li>
-    </>
+    </div>
+  
   );
 
   // Links for authenticated users
   const authLinks = (
 
-    <div class="flex items-center justify-center">
+    <div class="md:flex items-center md:ustify-center">
       <li>
         <Link 
-          className='block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-blue-600'
+          class='block px-2 md:py-2 py-0 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3  md:hover:bg-transparent md:hover:text-blue-600'
           to='/newsletter'
           onClick={() => setIsMenuOpen(false)}
         >
@@ -65,7 +66,7 @@ const Navbar = () => {
       </li>
       <li>
         <Link 
-          className='block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-blue-600'
+          class='block px-2 md:py-2 py-0 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3  md:hover:bg-transparent md:hover:text-blue-600'
           to='/translate'
           onClick={() => setIsMenuOpen(false)}
         >
@@ -73,59 +74,53 @@ const Navbar = () => {
         </Link>
         
       </li>
-    <li>
-      <button 
-        className=' bg-black block w-full text-left text-white px-4 py-2 text-gray-700 hover:bg-yellow-300 hover:text-red-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-red-600'
-        onClick={logout_user}
-      >
-        Logout
-      </button>
-    </li>
+      <li>
+        <button 
+          class=' bg-black block text-left text-white px-4 md:py-2 py-0 text-gray-700 hover:bg-yellow-300 hover:text-red-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-red-600'
+          onClick={logout_user}
+        >
+          Logout
+        </button>
+      </li>
     </div>
   );
 
   return (
-    <Fragment >
-      <nav className='bg-white shadow-sm border-b border-gray-200'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex justify-between items-center h-16'>
-            {/* Brand */}
-            <div className='flex-shrink-0'>
-              <Link 
-                className=' font-bold text-gray-800 hover:text-blue-600 transition-colors duration-200'
-                to='/'
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Auth System
-              </Link>
-            </div>
+      <nav class=' fixed w-full  bg-white shadow border-b border-gray-200  z-20 '>
+        <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div class='flex justify-between items-center h-16 '>
 
-            {/* Desktop Navigation */}
-            <div className='hidden md:block'>
-              <ul className='flex'>
-                <li class="mt-1 items-center">
-                  <Link 
-                    className='mt-4 font-bold text-gray-800 hover:text-blue-600 transition-colors duration-200'
+            {/* Desktop */}
+            <div className='hidden md:block flex-shrink-0  w-full'>
+              <div className="flex items-center w-full justify-between ">
+                <ul>
+                  <Link
+                    className='block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 md:inline-block md:px-3 md:py-2 md:hover:bg-transparent md:hover:text-blue-600'
                     to='/'
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Home
                   </Link>
-                </li>
-                {isAuthenticated ? authLinks : guestLinks}
-              </ul>
+                </ul>
+      
+                <div>
+                  <ul className="flex items-center justify-end ">
+                    {isAuthenticated ? authLinks : guestLinks}
+                  </ul>
+                </div>
+              </div>
             </div>
-
-            {/* Mobile menu button */}
-            <div className='md:hidden'>
+            
+            {/* Mobile menu  */}
+            <div class='md:hidden mt-2 mb-2 flex items-center justify '>
               <button
-                className='inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200'
+                class='inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200'
                 onClick={toggleMenu}
                 aria-expanded={isMenuOpen}
                 aria-label='Toggle navigation'
               >
                 <svg 
-                  className='h-6 w-6' 
+                  class='h-6 w-6' 
                   stroke='currentColor' 
                   fill='none' 
                   viewBox='0 0 24 24'
@@ -147,28 +142,31 @@ const Navbar = () => {
                   )}
                 </svg>
               </button>
+              
+                <p class="text-black font-bold text-red-500 ml-25 text-3xl">Breakthru!</p>
+              
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
-          <div className='px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200'>
-            <Link 
-              className='block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 font-medium'
-              to='/'
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <ul className='space-y-1'>
-              {isAuthenticated ? authLinks : guestLinks}
-            </ul>
-          </div>
+        {/* Mobile Nav */}
+        <div class={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>           
+          <div class='px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200'>             
+            <Link                
+              class='block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 font-medium'               
+              to='/'               
+              onClick={() => setIsMenuOpen(false)}             
+            >               
+              Home             
+            </Link>             
+            <div class="">               
+              {isAuthenticated ? authLinks : guestLinks}             
+            </div>           
+          </div>         
         </div>
       </nav>
-    </Fragment>
   );
 };
 
 export default Navbar;
+

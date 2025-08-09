@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div class="w-full">
       <Navbar isAuthenticated={isAuthenticated} user={user} />
       <main>{children}</main>
     </div>
