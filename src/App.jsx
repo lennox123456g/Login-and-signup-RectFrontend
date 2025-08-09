@@ -25,6 +25,8 @@ const App = () => (
                 <Layout>
                     <main className="flex-grow w-full mt-10">
                         <Routes>
+                            {/* Redirect /index.html to home */}
+                            <Route path='/index.html' element={<Navigate to="/" replace />} />
                             <Route path='/' element={<Home />}  />
                             <Route path='/login' element={<Login />}  />
                             <Route path='/signup' element={<Signup />} />
