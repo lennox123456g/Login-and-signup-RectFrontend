@@ -33,7 +33,7 @@ const App = () => (
                             <Route path='/activate/:uid/:token' element={<Activate />} />
                             <Route path='/newsletter' element={<Newsletter />} />
                             <Route path='/translate' element={<Translate/>} />
-                            <Route path="*" element={<Navigate to="/" replace />} />
+                            <Route path="/index.html" element={<Navigate to="/" replace />} />
                         </Routes>
                     </main>
                 </Layout>
